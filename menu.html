@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        #meal-box {
+            width:80%;
+            margin: auto;
+        }
+        #meal-box > div {
+            border-bottom: 1px solid lightgray;
+            margin-top: 20px;
+        }
+        #meal-box > div > img {
+            height:200px
+        }
+        #cart {
+            border: 1px solid transparent;
+            display: flex;
+            justify-content:end;
+            text-decoration: violet;
+        }
+    </style>
+</head>
+<body>
+    <div id="cart">
+    <button><a href="cart.html">Go To Cart</a></button>
+</div>
+    <div id="meal-box"></div>
+
+</body>
+</html>
+
+<script>
+
+    let meal_box = document.getElementById("meal-box")
+    async function Mymeals() {
+
+    
+        let res = await fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood")
+        let data = await res.json()
+        let getit = data.meals
+
+        getit.forEach(({idMeal}) => {
+
+            GETmeal(idMeal)
+         
+        })
+
+    }
+
+    async function GETmeal(idMeal) {
+        let respose = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`)
+            let da = await respose.json()
+            appendto(da.meals)
+    }
+
+    Mymeals()
+    function appendto(detail) {
+        detail.forEach(({strMeal,strInstructions,strMealThumb}) => {
+
+            let div = document.createElement("div")
+            let mname =document.createElement("p")
+            mname.textContent = strMeal
+            let des = document.createElement("p")
+            des.textContent = strInstructions
+
+            let img = document.createElement("img")
+            img.src = strMealThumb
+
+            let btn = document.createElement("button")
+
+            btn.innerText = "Add to cart"
+
+            btn.onclick = function() {
+                addtoCart(strMeal,strInstructions,strMealThumb,price.textContent)
+            }
+
+            let price = document.createElement("p")
+            price.textContent ="Price : "  + Math.floor(Math.random() * 400)
+
+            div.append(img,mname,price,btn,des)
+
+            meal_box.append(div)
+
+        })
+    }
+
+    if(localStorage.getItem("Mealcart") === null) {
+        localStorage.setItem("Mealcart" , JSON.stringify([]))
+    }
+
+    function addtoCart(strMeal,strInstructions,strMealThumb,price) {
+
+        let obj = {
+            name: strMeal,
+            des: strInstructions,
+            image: strMealThumb,
+            price: price
+        }
+
+        let get = JSON.parse(localStorage.getItem("Mealcart"))
+
+        get.push(obj)
+
+        localStorage.setItem("Mealcart" , JSON.stringify(get))
+
+    }
+</script>

@@ -1,0 +1,112 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        #cart-box > div {
+            border-bottom: 1px solid grey;
+            padding: 20px;
+        }
+        #cart-box > div > img {
+            height: 200px;
+        }
+        .place {
+            padding: 5px 20px;
+            background-color: black;
+            color: white;
+            font-weight: 500;
+            margin-left: 45%;
+        }
+    </style>
+</head>
+<body>
+    <div id="cart-box">
+
+    </div>
+
+    <button class="place" onclick="PlaceOrder()">Place Order</button>
+</body>
+</html>
+
+<script>
+
+    let cart_box = document.getElementById("cart-box")
+
+    let get = JSON.parse(localStorage.getItem("Mealcart"))
+
+    function appendtocart(get) {
+
+        get.forEach(({name, des, image, price}) => {
+
+            let div = document.createElement("div")
+
+            let img = document.createElement("img")
+            img.src = image
+
+            let pri = document.createElement("p")
+            pri.textContent =  price
+
+            let mename = document.createElement("p")
+            mename.textContent = name
+
+            div.append(img,mename,pri)
+            cart_box.append(div)
+            
+        })
+
+    }
+// <--------------------- clear Cart -------------------------------->>>>>>
+
+// function removeItem(id) {
+//             let obj = JSON.parse(localStorage.getItem("cart"));
+        //     if (obj[id] == 1) {
+        //         delete obj[id];
+        //     } else {
+        //         obj[id]--;
+        //     }
+         
+        // }
+
+//<-------------------- Time Interval --------------------->>>>>
+
+    appendtocart(get)
+
+
+    function PlaceOrder() {
+
+        setTimeout(() => {
+            alert("Your order is accepted")
+        },0)
+
+
+        setTimeout(() => {
+            alert("Your order is being cooked")
+        },3000)
+
+        setTimeout(() => {
+            alert(" Your order is ready")
+        },8000)
+
+        setTimeout(() => {
+            alert("Order out for delivery")
+        },10000)
+
+        setTimeout(() => {
+            alert("Order delivered")
+        },12000)
+
+    }
+
+
+
+
+//     function Goto() {
+//     window.location.href = "menu.html"
+// }
+
+</script>
